@@ -17,8 +17,3 @@ rescue SpaceInsideFileNameError => e
 rescue InvalidHeaderError => e
   puts e.message.to_s
 end
-
-
-
-
-# /home/jayanti/AdvancedRuby/csv_file.csv
