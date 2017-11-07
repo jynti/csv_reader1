@@ -14,7 +14,7 @@ class CsvReader
   def invalid_file_name?
     raise InvalidExtensionError, "Only csv files valid" unless File.extname(@csv_file_path).eql?(".csv")
     raise SpaceInsideFileNameError, "There is a whitespace in your file name" if @csv_file_name.match(/\s/)
-    raise ClassAlreadyExistsError, "#{@csv_file_name.capitalize} class already exists" if Object.const_defined? @csv_file_name.capitalize
+    raise ClassAlreadyExistsError, "#{@csv_file_name.capitalize} class already exists" if ObjectSpace.each_object(Class).any? {|klass| klass.to_s === @csv_file_name.capitalize}
   end
 
   def create_class
