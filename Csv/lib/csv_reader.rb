@@ -12,8 +12,8 @@ class CsvReader
   end
 
   def invalid_file_name?
-    raise InvalidExtensionError, "Only csv files valid" unless File.extname(@csv_file_path).eql?(".csv")
-    raise SpaceInsideFileNameError, "There is a whitespace in your file name" if @csv_file_name.match(/\s/)
+    raise InvalidExtensionError unless File.extname(@csv_file_path).eql?(".csv")
+    raise SpaceInsideFileNameError if @csv_file_name.match(/\s/)
     raise ClassAlreadyExistsError, "#{@csv_file_name.capitalize} class already exists" if ObjectSpace.each_object(Class).any? {|klass| klass.to_s === @csv_file_name.capitalize}
   end
 
@@ -48,17 +48,21 @@ class CsvReader
       end
     end
   end
-
-  def read_in_csv_data
-    create_class
-    create_methods_for_class
+  
+  def create_objects
     CSV.foreach(@csv_file_path, headers: true) do |row|
       csv_object = @csv_class.new
       @headers.each do |header|
         csv_object.send("#{header}=", row[header])
       end
-      items << csv_object
+      @items << csv_object
     end
+  end
+  
+  def process
+    create_class
+    create_methods_for_class
+    create_objects
   end
 end
 
