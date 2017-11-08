@@ -6,14 +6,14 @@ file_path = gets.chomp
 
 reader = CsvReader.new(file_path)
 begin
-  reader.read_in_csv_data
+  reader.process
   p reader.items
 rescue InvalidExtensionError => e
-  puts e.message.to_s
+  puts e.message
 rescue ClassAlreadyExistsError => e
-  puts e.message.to_s
+  puts e.message
 rescue SpaceInsideFileNameError => e
-  puts e.message.to_s
+  puts e.message
 rescue InvalidHeaderError => e
-  puts e.message.to_s
+  puts e.message
 end
